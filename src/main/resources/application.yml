@@ -1,0 +1,28 @@
+spring:
+  application:
+    name: gk-app-auth
+  profiles:
+    active: ${APP_ENV:dev}
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+    default-property-inclusion: non_null
+
+management:
+  health:
+    redis:
+      enabled: false
+  endpoints:
+    jmx:
+      exposure:
+        include: health,info
+
+# swagger
+swagger:
+  enabled: ${SWAGGER_ENABLE:true}
+  base-package: top.alexmmd.dog
+  title: dog-hole
+  version: 1.0.0.SNAPSHOT
+  description: dog-hole
+  contact:
+    name: alex
