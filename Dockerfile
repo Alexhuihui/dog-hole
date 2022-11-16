@@ -1,5 +1,5 @@
 FROM openjdk:11
-ARG PROJECT_NAME
+ARG PROJECT_NAME=dog-hole
 WORKDIR /opt/deployments
 COPY   $PROJECT_NAME/target/$PROJECT_NAME.jar /opt/deployments/
 EXPOSE 80
