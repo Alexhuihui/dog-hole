@@ -1,4 +1,4 @@
-FROM gk.docker.io:5000/jdk1.8
+FROM openjdk:11
 ARG PROJECT_NAME
 WORKDIR /opt/deployments
 COPY   $PROJECT_NAME/target/$PROJECT_NAME.jar /opt/deployments/
