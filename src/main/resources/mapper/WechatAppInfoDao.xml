@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.alexmmd.dog.dao.WechatAppInfoDao">
+
+    <resultMap type="top.alexmmd.dog.entity.WechatAppInfo" id="WechatAppInfoMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="appCode" column="app_code" jdbcType="VARCHAR"/>
+        <result property="appId" column="app_id" jdbcType="VARCHAR"/>
+        <result property="appSecret" column="app_secret" jdbcType="VARCHAR"/>
+        <result property="appPlatformCode" column="app_platform_code" jdbcType="INTEGER"/>
+        <result property="remarks" column="remarks" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="WechatAppInfoMap">
+        select
+          id, app_code, app_id, app_secret, app_platform_code, remarks
+        from wechat_app_info
+        where id = #{id}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="WechatAppInfoMap">
+        select
+          id, app_code, app_id, app_secret, app_platform_code, remarks
+        from wechat_app_info
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="appCode != null and appCode != ''">
+                and app_code = #{appCode}
+            </if>
+            <if test="appId != null and appId != ''">
+                and app_id = #{appId}
+            </if>
+            <if test="appSecret != null and appSecret != ''">
+                and app_secret = #{appSecret}
+            </if>
+            <if test="appPlatformCode != null">
+                and app_platform_code = #{appPlatformCode}
+            </if>
+            <if test="remarks != null and remarks != ''">
+                and remarks = #{remarks}
+            </if>
+        </where>
+        limit #{pageable.offset}, #{pageable.pageSize}
+    </select>
+
+    <!--统计总行数-->
+    <select id="count" resultType="java.lang.Long">
+        select count(1)
+        from wechat_app_info
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="appCode != null and appCode != ''">
+                and app_code = #{appCode}
+            </if>
+            <if test="appId != null and appId != ''">
+                and app_id = #{appId}
+            </if>
+            <if test="appSecret != null and appSecret != ''">
+                and app_secret = #{appSecret}
+            </if>
+            <if test="appPlatformCode != null">
+                and app_platform_code = #{appPlatformCode}
+            </if>
+            <if test="remarks != null and remarks != ''">
+                and remarks = #{remarks}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into wechat_app_info(app_code, app_id, app_secret, app_platform_code, remarks)
+        values (#{appCode}, #{appId}, #{appSecret}, #{appPlatformCode}, #{remarks})
+    </insert>
+
+    <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into wechat_app_info(app_code, app_id, app_secret, app_platform_code, remarks)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+        (#{entity.appCode}, #{entity.appId}, #{entity.appSecret}, #{entity.appPlatformCode}, #{entity.remarks})
+        </foreach>
+    </insert>
+
+    <insert id="insertOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into wechat_app_info(app_code, app_id, app_secret, app_platform_code, remarks)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.appCode}, #{entity.appId}, #{entity.appSecret}, #{entity.appPlatformCode}, #{entity.remarks})
+        </foreach>
+        on duplicate key update
+        app_code = values(app_code),
+        app_id = values(app_id),
+        app_secret = values(app_secret),
+        app_platform_code = values(app_platform_code),
+        remarks = values(remarks)
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update wechat_app_info
+        <set>
+            <if test="appCode != null and appCode != ''">
+                app_code = #{appCode},
+            </if>
+            <if test="appId != null and appId != ''">
+                app_id = #{appId},
+            </if>
+            <if test="appSecret != null and appSecret != ''">
+                app_secret = #{appSecret},
+            </if>
+            <if test="appPlatformCode != null">
+                app_platform_code = #{appPlatformCode},
+            </if>
+            <if test="remarks != null and remarks != ''">
+                remarks = #{remarks},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from wechat_app_info where id = #{id}
+    </delete>
+
+</mapper>
+
