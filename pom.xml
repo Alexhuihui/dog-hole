@@ -57,7 +57,7 @@
   </dependencies>
 
   <build>
-    <finalName>alex-common</finalName>
+    <finalName>dog-hole</finalName>
     <plugins>
       <plugin>
         <groupId>org.springframework.boot</groupId>
