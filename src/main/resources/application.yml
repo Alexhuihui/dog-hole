@@ -1,4 +1,6 @@
 spring:
+  main:
+    allow-circular-references: true
   application:
     name: gk-app-auth
   profiles:
@@ -16,13 +18,3 @@ management:
     jmx:
       exposure:
         include: health,info
-
-# swagger
-swagger:
-  enabled: ${SWAGGER_ENABLE:true}
-  base-package: top.alexmmd.dog
-  title: dog-hole
-  version: 1.0.0.SNAPSHOT
-  description: dog-hole
-  contact:
-    name: alex
