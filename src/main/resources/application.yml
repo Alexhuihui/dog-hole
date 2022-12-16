@@ -10,6 +10,12 @@ spring:
     time-zone: GMT+8
     default-property-inclusion: non_null
 
+mybatis:
+  type-aliases-package: top.alexmmd.dog.entity
+  mapper-locations: classpath*:/mapper/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+
 management:
   health:
     redis:

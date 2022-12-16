@@ -1,17 +1,17 @@
-package top.alexmmd.dog.entity;
+package top.alexmmd.dog.domain.entity;
 
 import java.util.Date;
 import java.io.Serializable;
 import lombok.Data;
 
 /**
- * (UsrLoginAccount)实体类
+ * (LoginAccount)实体类
  *
  * @author makejava
  * @since 2022-10-11 08:48:44
  */
 @Data
-public class UsrLoginAccount implements Serializable {
+public class LoginAccount implements Serializable {
     private static final long serialVersionUID = 592421031463279303L;
     /**
      * 自增主键
@@ -20,7 +20,7 @@ public class UsrLoginAccount implements Serializable {
     /**
      * 用户id
      */
-    private String uid;
+    private Long uid;
     /**
      * 账户
      */

@@ -1,4 +1,4 @@
-package top.alexmmd.dog.entity;
+package top.alexmmd.dog.domain.entity;
 
 import java.io.Serializable;
 import lombok.Data;
