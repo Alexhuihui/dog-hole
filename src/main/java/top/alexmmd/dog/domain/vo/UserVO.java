@@ -2,6 +2,7 @@ package top.alexmmd.dog.domain.vo;
 
 import java.util.List;
 import lombok.Data;
+import top.alexmmd.dog.domain.entity.Role;
 
 /**
  * @author wangyonghui
@@ -71,6 +72,6 @@ public class UserVO {
     /**
      * 角色列表
      */
-    private List<String> roleList;
+    private List<Role> roleList;
 
 }

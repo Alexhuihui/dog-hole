@@ -1,5 +1,6 @@
 package top.alexmmd.dog.service;
 
+import top.alexmmd.dog.domain.dto.WechatRegisterDTO;
 import top.alexmmd.dog.domain.dto.WechatUserInfoDTO;
 import top.alexmmd.dog.domain.entity.User;
 import top.alexmmd.dog.domain.vo.UserVO;
@@ -18,7 +19,7 @@ public interface IUserService {
      * @param account 账户
      * @return 用户信息
      */
-    UserVO queryUserByAccount(WechatUserInfoDTO account);
+    UserVO queryUserByAccount(String account);
 
     void createUser(User user);
 
@@ -31,4 +32,6 @@ public interface IUserService {
     boolean userExists(String username);
 
     User loadUserByUsername(String username);
+
+    Long wechatRegister(WechatRegisterDTO wechatRegisterDTO);
 }

@@ -1,5 +1,8 @@
 package top.alexmmd.dog.dao;
 
+import org.apache.ibatis.annotations.Param;
+import top.alexmmd.dog.domain.entity.WechatAppInfo;
+
 /**
  * 微信应用信息管理(WechatAppInfo)表数据库访问层
  *
@@ -9,5 +12,6 @@ package top.alexmmd.dog.dao;
 public interface WechatAppInfoDao {
 
 
+    WechatAppInfo queryByAppCode(@Param("appCode") String appCode);
 }
 

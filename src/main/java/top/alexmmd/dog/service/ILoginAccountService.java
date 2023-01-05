@@ -1,5 +1,7 @@
 package top.alexmmd.dog.service;
 
+import top.alexmmd.dog.domain.entity.LoginAccount;
+
 /**
  * (LoginAccount)表服务接口
  *
@@ -8,5 +10,5 @@ package top.alexmmd.dog.service;
  */
 public interface ILoginAccountService {
 
-
+    void createLoginAccount(LoginAccount loginAccount);
 }

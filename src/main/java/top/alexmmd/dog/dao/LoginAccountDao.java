@@ -1,5 +1,7 @@
 package top.alexmmd.dog.dao;
 
+import top.alexmmd.dog.domain.entity.LoginAccount;
+
 /**
  * (LoginAccount)表数据库访问层
  *
@@ -8,6 +10,6 @@ package top.alexmmd.dog.dao;
  */
 public interface LoginAccountDao {
 
-
+    int insert(LoginAccount loginAccount);
 }
 

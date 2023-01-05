@@ -73,6 +73,13 @@
         </where>
     </select>
 
+    <select id="queryByAppCode" resultMap="WechatAppInfoMap">
+        select
+            id, app_code, app_id, app_secret, app_platform_code, remarks
+        from wechat_app_info
+        where app_code = #{appCode}
+    </select>
+
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
         insert into wechat_app_info(app_code, app_id, app_secret, app_platform_code, remarks)

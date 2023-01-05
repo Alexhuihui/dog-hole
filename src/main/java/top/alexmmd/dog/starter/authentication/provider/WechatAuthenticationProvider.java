@@ -33,7 +33,7 @@ public class WechatAuthenticationProvider implements AuthenticationProvider {
         }
         // 通过微信用户信息查询本系统的用户信息
         IUserService userService = SpringUtil.getBean(IUserService.class);
-        UserVO userVO = userService.queryUserByAccount(wechatUserInfoDTO);
+        UserVO userVO = userService.queryUserByAccount(wechatUserInfoDTO.getOpenId());
         if (ObjectUtil.isNull(userVO)) {
             throw new AuthenticationServiceException("根据openId查询用户信息失败");
         }
@@ -45,7 +45,7 @@ public class WechatAuthenticationProvider implements AuthenticationProvider {
         WechatAuthenticationToken result = WechatAuthenticationToken.authenticated(userVO,
                 userVO.getRoleList()
                         .stream()
-                        .map(SimpleGrantedAuthority::new)
+                        .map(role -> new SimpleGrantedAuthority(role.getName()))
                         .collect(Collectors.toList()));
         result.setDetails(authentication.getDetails());
         return result;

@@ -2,6 +2,8 @@ package top.alexmmd.dog.dao;
 
 import org.apache.ibatis.annotations.Param;
 import top.alexmmd.dog.domain.dto.WechatUserInfoDTO;
+import top.alexmmd.dog.domain.entity.Role;
+import top.alexmmd.dog.domain.entity.User;
 import top.alexmmd.dog.domain.vo.UserVO;
 
 /**
@@ -19,5 +21,9 @@ public interface UserDao {
      * @return
      */
     UserVO queryUserByAccount(@Param("query") String account);
+
+    int insert(User user);
+
+    int insertRole(Role role);
 }
 

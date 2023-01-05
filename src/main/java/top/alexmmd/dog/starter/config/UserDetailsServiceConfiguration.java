@@ -11,6 +11,7 @@ import org.springframework.security.provisioning.UserDetailsManager;
  *
  * @author dax
  */
+@Configuration
 public class UserDetailsServiceConfiguration {
 
 
@@ -18,9 +19,10 @@ public class UserDetailsServiceConfiguration {
      * User details manager 自定义.
      *
      * @param userDetailsRepository the user details repository
-     * @see org.springframework.security.provisioning.JdbcUserDetailsManager
      * @return the user details manager
+     * @see org.springframework.security.provisioning.JdbcUserDetailsManager
      */
+    @Bean
     public UserDetailsManager userDetailsManager(UserDetailsRepository userDetailsRepository) {
         return new UserDetailsManager() {
             @Override
@@ -49,7 +51,8 @@ public class UserDetailsServiceConfiguration {
             }
 
             @Override
-            public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+            public UserDetails loadUserByUsername(String username)
+                    throws UsernameNotFoundException {
                 return userDetailsRepository.loadUserByUsername(username);
             }
         };

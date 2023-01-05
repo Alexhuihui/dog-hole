@@ -5,10 +5,13 @@ import cn.hutool.http.HttpRequest;
 import cn.hutool.http.HttpResponse;
 import cn.hutool.http.HttpUtil;
 import cn.hutool.json.JSONObject;
+import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import top.alexmmd.dog.dao.WechatAppInfoDao;
 import top.alexmmd.dog.domain.dto.WechatUserInfoDTO;
+import top.alexmmd.dog.domain.entity.WechatAppInfo;
 import top.alexmmd.dog.service.IWechatService;
 
 /**
@@ -19,17 +22,18 @@ import top.alexmmd.dog.service.IWechatService;
 @Slf4j
 public class WechatServiceImpl implements IWechatService {
 
+    public static final String TIGER = "DT001";
+    @Resource
+    private WechatAppInfoDao wechatAppInfoDao;
+
     public static final String WECHAT_LOGIN_URL = "https://api.weixin.qq.com/sns/jscode2session";
-
-    @Value("${wechat.appId}")
-    private String appId;
-
-    @Value("${wechat.appSecret}")
-    private String appSecret;
 
     @Override
     public WechatUserInfoDTO wechatLogin(String code) {
         HttpRequest request = HttpUtil.createGet(WECHAT_LOGIN_URL);
+        WechatAppInfo wechatAppInfo = wechatAppInfoDao.queryByAppCode(TIGER);
+        String appId = wechatAppInfo.getAppId();
+        String appSecret = wechatAppInfo.getAppSecret();
         request.form("appid", appId);
         request.form("secret", appSecret);
         request.form("js_code", code);

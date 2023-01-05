@@ -1,14 +1,18 @@
 package top.alexmmd.dog.controller;
 
+import cn.hutool.json.JSONUtil;
 import javax.annotation.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import top.alexmmd.dog.domain.entity.Rest;
-import top.alexmmd.dog.domain.entity.RestBody;
+import top.alexmmd.common.base.http.response.BaseResponse;
+import top.alexmmd.common.base.http.response.ObjectResponse;
+import top.alexmmd.common.security.jwt.JwtHelper;
+import top.alexmmd.dog.domain.dto.WechatRegisterDTO;
+import top.alexmmd.dog.domain.vo.UserVO;
 import top.alexmmd.dog.service.IUserService;
 
 /**
@@ -20,14 +24,19 @@ import top.alexmmd.dog.service.IUserService;
 public class LoginController {
 
     @Resource
-    private IUserService IUserService;
+    private IUserService userService;
+
+    @PostMapping("/wechatRegister")
+    public ObjectResponse<Long> wechatRegister(@RequestBody WechatRegisterDTO wechatRegisterDTO) {
+        return ObjectResponse.success(userService.wechatRegister(wechatRegisterDTO), "注册成功");
+    }
 
     /**
      * 登录失败返回 401 以及提示信息. * * @return the rest
      */
     @PostMapping("/failure")
-    public Rest loginFailure() {
-        return RestBody.failure(HttpStatus.UNAUTHORIZED.value(), "登录失败了，老哥");
+    public BaseResponse loginFailure() {
+        return new BaseResponse(HttpStatus.UNAUTHORIZED.value(), "登录失败了，老哥");
     }
 
     /**
@@ -36,11 +45,10 @@ public class LoginController {
      * @return the rest
      */
     @PostMapping("/success")
-    public Rest loginSuccess() {
+    public ObjectResponse<String> loginSuccess() {
         // 登录成功后用户的认证信息 UserDetails会存在 安全上下文寄存器 SecurityContextHolder 中
-        User principal = (User) SecurityContextHolder.getContext().getAuthentication()
+        UserVO principal = (UserVO) SecurityContextHolder.getContext().getAuthentication()
                 .getPrincipal();
-        String username = principal.getUsername();
-        return RestBody.okData(username, "登录成功");
+        return ObjectResponse.success(JwtHelper.encode(JSONUtil.toJsonStr(principal)), "登录成功");
     }
 }

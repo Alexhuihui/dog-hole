@@ -5,6 +5,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import top.alexmmd.dog.starter.authorization.AuthContext;
 
 /**
  * @author wangyonghui
@@ -17,7 +18,9 @@ public class IndexController {
 
     @GetMapping("/name")
     public String name() {
-        log.info(SecurityContextHolder.getContext().getAuthentication().getName());
-        return "dog-hole";
+        log.info(AuthContext.getName());
+        log.info(AuthContext.getUid().toString());
+        AuthContext.getRoleList().forEach(role -> System.out.println("role = " + role));
+        return AuthContext.getName();
     }
 }

@@ -2,7 +2,10 @@ package top.alexmmd.dog.domain.entity;
 
 import java.util.Date;
 import java.io.Serializable;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * (User)实体类
@@ -11,6 +14,9 @@ import lombok.Data;
  * @since 2022-10-11 08:48:44
  */
 @Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class User implements Serializable {
     private static final long serialVersionUID = 283792280296544817L;
     /**

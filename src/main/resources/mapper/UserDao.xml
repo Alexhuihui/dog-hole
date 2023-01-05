@@ -1,250 +1,302 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="top.alexmmd.dog.dao.UserDao">
 
-    <resultMap type="top.alexmmd.dog.domain.entity.User" id="UsrUserMap">
-        <result property="id" column="id" jdbcType="INTEGER"/>
-        <result property="uid" column="uid" jdbcType="INTEGER"/>
-        <result property="unionId" column="union_id" jdbcType="VARCHAR"/>
-        <result property="nickName" column="nick_name" jdbcType="VARCHAR"/>
-        <result property="phone" column="phone" jdbcType="VARCHAR"/>
-        <result property="gender" column="gender" jdbcType="INTEGER"/>
-        <result property="province" column="province" jdbcType="VARCHAR"/>
-        <result property="city" column="city" jdbcType="VARCHAR"/>
-        <result property="country" column="country" jdbcType="VARCHAR"/>
-        <result property="avatarUrl" column="avatar_url" jdbcType="VARCHAR"/>
-        <result property="status" column="status" jdbcType="INTEGER"/>
-        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
-        <result property="createUser" column="create_user" jdbcType="VARCHAR"/>
-        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
-        <result property="updateUser" column="update_user" jdbcType="VARCHAR"/>
-    </resultMap>
+  <resultMap type="top.alexmmd.dog.domain.entity.User" id="UsrUserMap">
+    <result property="id" column="id" jdbcType="INTEGER"/>
+    <result property="uid" column="uid" jdbcType="INTEGER"/>
+    <result property="unionId" column="union_id" jdbcType="VARCHAR"/>
+    <result property="nickName" column="nick_name" jdbcType="VARCHAR"/>
+    <result property="phone" column="phone" jdbcType="VARCHAR"/>
+    <result property="gender" column="gender" jdbcType="INTEGER"/>
+    <result property="province" column="province" jdbcType="VARCHAR"/>
+    <result property="city" column="city" jdbcType="VARCHAR"/>
+    <result property="country" column="country" jdbcType="VARCHAR"/>
+    <result property="avatarUrl" column="avatar_url" jdbcType="VARCHAR"/>
+    <result property="status" column="status" jdbcType="INTEGER"/>
+    <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+    <result property="createUser" column="create_user" jdbcType="VARCHAR"/>
+    <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+    <result property="updateUser" column="update_user" jdbcType="VARCHAR"/>
+  </resultMap>
 
-    <resultMap type="top.alexmmd.dog.domain.vo.UserVO" id="UserVOMap">
-        <result property="id" column="id" jdbcType="INTEGER"/>
-        <result property="uid" column="uid" jdbcType="INTEGER"/>
-        <result property="unionId" column="union_id" jdbcType="VARCHAR"/>
-        <result property="nickName" column="nick_name" jdbcType="VARCHAR"/>
-        <result property="phone" column="phone" jdbcType="VARCHAR"/>
-        <result property="gender" column="gender" jdbcType="INTEGER"/>
-        <result property="province" column="province" jdbcType="VARCHAR"/>
-        <result property="city" column="city" jdbcType="VARCHAR"/>
-        <result property="country" column="country" jdbcType="VARCHAR"/>
-        <result property="avatarUrl" column="avatar_url" jdbcType="VARCHAR"/>
-    </resultMap>
+  <resultMap type="top.alexmmd.dog.domain.vo.UserVO" id="UserVOMap">
+    <result property="id" column="id" jdbcType="INTEGER"/>
+    <result property="uid" column="uid" jdbcType="INTEGER"/>
+    <result property="unionId" column="union_id" jdbcType="VARCHAR"/>
+    <result property="nickName" column="nick_name" jdbcType="VARCHAR"/>
+    <result property="phone" column="phone" jdbcType="VARCHAR"/>
+    <result property="gender" column="gender" jdbcType="INTEGER"/>
+    <result property="province" column="province" jdbcType="VARCHAR"/>
+    <result property="city" column="city" jdbcType="VARCHAR"/>
+    <result property="country" column="country" jdbcType="VARCHAR"/>
+    <result property="avatarUrl" column="avatar_url" jdbcType="VARCHAR"/>
+    <collection property="roleList" ofType="top.alexmmd.dog.domain.entity.Role">
+      <result property="id" column="c_id" jdbcType="INTEGER"/>
+      <result property="uid" column="c_uid" jdbcType="INTEGER"/>
+      <result property="name" column="c_name" jdbcType="VARCHAR"/>
+    </collection>
+  </resultMap>
 
-    <select id="queryUserByAccount" resultMap="UserVOMap">
+  <select id="queryUserByAccount" resultMap="UserVOMap">
+    SELECT b.id,
+           b.uid,
+           b.union_id,
+           b.nick_name,
+           b.phone,
+           b.gender,
+           b.province,
+           b.city,
+           b.country,
+           b.avatar_url,
+           c.id c_id,
+           c.uid c_uid,
+           c.name c_name
+    FROM usr_login_account AS a
+    LEFT JOIN usr_user AS b ON a.uid = b.uid
+    LEFT JOIN usr_role AS c ON a.uid = c.uid
+    WHERE a.account = #{query}
+      AND a.`status` = 1
+      AND b.`status` = 1
+  </select>
 
-    </select>
+  <!--查询单个-->
+  <select id="queryById" resultMap="UsrUserMap">
+    select id,
+           uid,
+           union_id,
+           nick_name,
+           phone,
+           gender,
+           province,
+           city,
+           country,
+           avatar_url,
+           status,
+           create_time,
+           create_user,
+           update_time,
+           update_user
+    from usr_user
+    where id = #{id}
+  </select>
 
-    <!--查询单个-->
-    <select id="queryById" resultMap="UsrUserMap">
-        select
-          id, uid, union_id, nick_name, phone, gender, province, city, country, avatar_url, status, create_time, create_user, update_time, update_user
-        from usr_user
-        where id = #{id}
-    </select>
+  <!--查询指定行数据-->
+  <select id="queryAllByLimit" resultMap="UsrUserMap">
+    select
+    id, uid, union_id, nick_name, phone, gender, province, city, country, avatar_url, status,
+    create_time, create_user, update_time, update_user
+    from usr_user
+    <where>
+      <if test="id != null">
+        and id = #{id}
+      </if>
+      <if test="uid != null and uid != ''">
+        and uid = #{uid}
+      </if>
+      <if test="unionId != null and unionId != ''">
+        and union_id = #{unionId}
+      </if>
+      <if test="nickName != null and nickName != ''">
+        and nick_name = #{nickName}
+      </if>
+      <if test="phone != null and phone != ''">
+        and phone = #{phone}
+      </if>
+      <if test="gender != null">
+        and gender = #{gender}
+      </if>
+      <if test="province != null and province != ''">
+        and province = #{province}
+      </if>
+      <if test="city != null and city != ''">
+        and city = #{city}
+      </if>
+      <if test="country != null and country != ''">
+        and country = #{country}
+      </if>
+      <if test="avatarUrl != null and avatarUrl != ''">
+        and avatar_url = #{avatarUrl}
+      </if>
+      <if test="status != null">
+        and status = #{status}
+      </if>
+      <if test="createTime != null">
+        and create_time = #{createTime}
+      </if>
+      <if test="createUser != null and createUser != ''">
+        and create_user = #{createUser}
+      </if>
+      <if test="updateTime != null">
+        and update_time = #{updateTime}
+      </if>
+      <if test="updateUser != null and updateUser != ''">
+        and update_user = #{updateUser}
+      </if>
+    </where>
+    limit #{pageable.offset}, #{pageable.pageSize}
+  </select>
 
-    <!--查询指定行数据-->
-    <select id="queryAllByLimit" resultMap="UsrUserMap">
-        select
-          id, uid, union_id, nick_name, phone, gender, province, city, country, avatar_url, status, create_time, create_user, update_time, update_user
-        from usr_user
-        <where>
-            <if test="id != null">
-                and id = #{id}
-            </if>
-            <if test="uid != null and uid != ''">
-                and uid = #{uid}
-            </if>
-            <if test="unionId != null and unionId != ''">
-                and union_id = #{unionId}
-            </if>
-            <if test="nickName != null and nickName != ''">
-                and nick_name = #{nickName}
-            </if>
-            <if test="phone != null and phone != ''">
-                and phone = #{phone}
-            </if>
-            <if test="gender != null">
-                and gender = #{gender}
-            </if>
-            <if test="province != null and province != ''">
-                and province = #{province}
-            </if>
-            <if test="city != null and city != ''">
-                and city = #{city}
-            </if>
-            <if test="country != null and country != ''">
-                and country = #{country}
-            </if>
-            <if test="avatarUrl != null and avatarUrl != ''">
-                and avatar_url = #{avatarUrl}
-            </if>
-            <if test="status != null">
-                and status = #{status}
-            </if>
-            <if test="createTime != null">
-                and create_time = #{createTime}
-            </if>
-            <if test="createUser != null and createUser != ''">
-                and create_user = #{createUser}
-            </if>
-            <if test="updateTime != null">
-                and update_time = #{updateTime}
-            </if>
-            <if test="updateUser != null and updateUser != ''">
-                and update_user = #{updateUser}
-            </if>
-        </where>
-        limit #{pageable.offset}, #{pageable.pageSize}
-    </select>
-
-    <!--统计总行数-->
-    <select id="count" resultType="java.lang.Long">
-        select count(1)
-        from usr_user
-        <where>
-            <if test="id != null">
-                and id = #{id}
-            </if>
-            <if test="uid != null and uid != ''">
-                and uid = #{uid}
-            </if>
-            <if test="unionId != null and unionId != ''">
-                and union_id = #{unionId}
-            </if>
-            <if test="nickName != null and nickName != ''">
-                and nick_name = #{nickName}
-            </if>
-            <if test="phone != null and phone != ''">
-                and phone = #{phone}
-            </if>
-            <if test="gender != null">
-                and gender = #{gender}
-            </if>
-            <if test="province != null and province != ''">
-                and province = #{province}
-            </if>
-            <if test="city != null and city != ''">
-                and city = #{city}
-            </if>
-            <if test="country != null and country != ''">
-                and country = #{country}
-            </if>
-            <if test="avatarUrl != null and avatarUrl != ''">
-                and avatar_url = #{avatarUrl}
-            </if>
-            <if test="status != null">
-                and status = #{status}
-            </if>
-            <if test="createTime != null">
-                and create_time = #{createTime}
-            </if>
-            <if test="createUser != null and createUser != ''">
-                and create_user = #{createUser}
-            </if>
-            <if test="updateTime != null">
-                and update_time = #{updateTime}
-            </if>
-            <if test="updateUser != null and updateUser != ''">
-                and update_user = #{updateUser}
-            </if>
-        </where>
-    </select>
+  <!--统计总行数-->
+  <select id="count" resultType="java.lang.Long">
+    select count(1)
+    from usr_user
+    <where>
+      <if test="id != null">
+        and id = #{id}
+      </if>
+      <if test="uid != null and uid != ''">
+        and uid = #{uid}
+      </if>
+      <if test="unionId != null and unionId != ''">
+        and union_id = #{unionId}
+      </if>
+      <if test="nickName != null and nickName != ''">
+        and nick_name = #{nickName}
+      </if>
+      <if test="phone != null and phone != ''">
+        and phone = #{phone}
+      </if>
+      <if test="gender != null">
+        and gender = #{gender}
+      </if>
+      <if test="province != null and province != ''">
+        and province = #{province}
+      </if>
+      <if test="city != null and city != ''">
+        and city = #{city}
+      </if>
+      <if test="country != null and country != ''">
+        and country = #{country}
+      </if>
+      <if test="avatarUrl != null and avatarUrl != ''">
+        and avatar_url = #{avatarUrl}
+      </if>
+      <if test="status != null">
+        and status = #{status}
+      </if>
+      <if test="createTime != null">
+        and create_time = #{createTime}
+      </if>
+      <if test="createUser != null and createUser != ''">
+        and create_user = #{createUser}
+      </if>
+      <if test="updateTime != null">
+        and update_time = #{updateTime}
+      </if>
+      <if test="updateUser != null and updateUser != ''">
+        and update_user = #{updateUser}
+      </if>
+    </where>
+  </select>
 
 
-    <!--新增所有列-->
-    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into usr_user(uid, union_id, nick_name, phone, gender, province, city, country, avatar_url, status, create_time, create_user, update_time, update_user)
-        values (#{uid}, #{unionId}, #{nickName}, #{phone}, #{gender}, #{province}, #{city}, #{country}, #{avatarUrl}, #{status}, #{createTime}, #{createUser}, #{updateTime}, #{updateUser})
-    </insert>
+  <!--新增所有列-->
+  <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+    insert into usr_user(uid, union_id, nick_name, phone, gender, province, city, country,
+                         avatar_url, status, create_time, create_user, update_time, update_user)
+    values (#{uid}, #{unionId}, #{nickName}, #{phone}, #{gender}, #{province}, #{city}, #{country},
+            #{avatarUrl}, #{status}, #{createTime}, #{createUser}, #{updateTime}, #{updateUser})
+  </insert>
 
-    <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
-        insert into usr_user(uid, union_id, nick_name, phone, gender, province, city, country, avatar_url, status, create_time, create_user, update_time, update_user)
-        values
-        <foreach collection="entities" item="entity" separator=",">
-        (#{entity.uid}, #{entity.unionId}, #{entity.nickName}, #{entity.phone}, #{entity.gender}, #{entity.province}, #{entity.city}, #{entity.country}, #{entity.avatarUrl}, #{entity.status}, #{entity.createTime}, #{entity.createUser}, #{entity.updateTime}, #{entity.updateUser})
-        </foreach>
-    </insert>
+  <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
+    insert into usr_user(uid, union_id, nick_name, phone, gender, province, city, country,
+    avatar_url, status, create_time, create_user, update_time, update_user)
+    values
+    <foreach collection="entities" item="entity" separator=",">
+      (#{entity.uid}, #{entity.unionId}, #{entity.nickName}, #{entity.phone}, #{entity.gender},
+      #{entity.province}, #{entity.city}, #{entity.country}, #{entity.avatarUrl}, #{entity.status},
+      #{entity.createTime}, #{entity.createUser}, #{entity.updateTime}, #{entity.updateUser})
+    </foreach>
+  </insert>
 
-    <insert id="insertOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">
-        insert into usr_user(uid, union_id, nick_name, phone, gender, province, city, country, avatar_url, status, create_time, create_user, update_time, update_user)
-        values
-        <foreach collection="entities" item="entity" separator=",">
-            (#{entity.uid}, #{entity.unionId}, #{entity.nickName}, #{entity.phone}, #{entity.gender}, #{entity.province}, #{entity.city}, #{entity.country}, #{entity.avatarUrl}, #{entity.status}, #{entity.createTime}, #{entity.createUser}, #{entity.updateTime}, #{entity.updateUser})
-        </foreach>
-        on duplicate key update
-        uid = values(uid),
-        union_id = values(union_id),
-        nick_name = values(nick_name),
-        phone = values(phone),
-        gender = values(gender),
-        province = values(province),
-        city = values(city),
-        country = values(country),
-        avatar_url = values(avatar_url),
-        status = values(status),
-        create_time = values(create_time),
-        create_user = values(create_user),
-        update_time = values(update_time),
-        update_user = values(update_user)
-    </insert>
+  <insert id="insertOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">
+    insert into usr_user(uid, union_id, nick_name, phone, gender, province, city, country,
+    avatar_url, status, create_time, create_user, update_time, update_user)
+    values
+    <foreach collection="entities" item="entity" separator=",">
+      (#{entity.uid}, #{entity.unionId}, #{entity.nickName}, #{entity.phone}, #{entity.gender},
+      #{entity.province}, #{entity.city}, #{entity.country}, #{entity.avatarUrl}, #{entity.status},
+      #{entity.createTime}, #{entity.createUser}, #{entity.updateTime}, #{entity.updateUser})
+    </foreach>
+    on duplicate key update
+    uid = values(uid),
+    union_id = values(union_id),
+    nick_name = values(nick_name),
+    phone = values(phone),
+    gender = values(gender),
+    province = values(province),
+    city = values(city),
+    country = values(country),
+    avatar_url = values(avatar_url),
+    status = values(status),
+    create_time = values(create_time),
+    create_user = values(create_user),
+    update_time = values(update_time),
+    update_user = values(update_user)
+  </insert>
+  <insert id="insertRole" keyProperty="id" useGeneratedKeys="true">
+    insert into usr_role(uid, name)
+    values (#{uid}, #{name})
+  </insert>
 
-    <!--通过主键修改数据-->
-    <update id="update">
-        update usr_user
-        <set>
-            <if test="uid != null and uid != ''">
-                uid = #{uid},
-            </if>
-            <if test="unionId != null and unionId != ''">
-                union_id = #{unionId},
-            </if>
-            <if test="nickName != null and nickName != ''">
-                nick_name = #{nickName},
-            </if>
-            <if test="phone != null and phone != ''">
-                phone = #{phone},
-            </if>
-            <if test="gender != null">
-                gender = #{gender},
-            </if>
-            <if test="province != null and province != ''">
-                province = #{province},
-            </if>
-            <if test="city != null and city != ''">
-                city = #{city},
-            </if>
-            <if test="country != null and country != ''">
-                country = #{country},
-            </if>
-            <if test="avatarUrl != null and avatarUrl != ''">
-                avatar_url = #{avatarUrl},
-            </if>
-            <if test="status != null">
-                status = #{status},
-            </if>
-            <if test="createTime != null">
-                create_time = #{createTime},
-            </if>
-            <if test="createUser != null and createUser != ''">
-                create_user = #{createUser},
-            </if>
-            <if test="updateTime != null">
-                update_time = #{updateTime},
-            </if>
-            <if test="updateUser != null and updateUser != ''">
-                update_user = #{updateUser},
-            </if>
-        </set>
-        where id = #{id}
-    </update>
+  <!--通过主键修改数据-->
+  <update id="update">
+    update usr_user
+    <set>
+      <if test="uid != null and uid != ''">
+        uid = #{uid},
+      </if>
+      <if test="unionId != null and unionId != ''">
+        union_id = #{unionId},
+      </if>
+      <if test="nickName != null and nickName != ''">
+        nick_name = #{nickName},
+      </if>
+      <if test="phone != null and phone != ''">
+        phone = #{phone},
+      </if>
+      <if test="gender != null">
+        gender = #{gender},
+      </if>
+      <if test="province != null and province != ''">
+        province = #{province},
+      </if>
+      <if test="city != null and city != ''">
+        city = #{city},
+      </if>
+      <if test="country != null and country != ''">
+        country = #{country},
+      </if>
+      <if test="avatarUrl != null and avatarUrl != ''">
+        avatar_url = #{avatarUrl},
+      </if>
+      <if test="status != null">
+        status = #{status},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime},
+      </if>
+      <if test="createUser != null and createUser != ''">
+        create_user = #{createUser},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime},
+      </if>
+      <if test="updateUser != null and updateUser != ''">
+        update_user = #{updateUser},
+      </if>
+    </set>
+    where id = #{id}
+  </update>
 
-    <!--通过主键删除-->
-    <delete id="deleteById">
-        delete from usr_user where id = #{id}
-    </delete>
+  <!--通过主键删除-->
+  <delete id="deleteById">
+    delete
+    from usr_user
+    where id = #{id}
+  </delete>
 
 </mapper>
 

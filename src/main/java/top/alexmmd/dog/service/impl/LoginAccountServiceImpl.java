@@ -3,6 +3,7 @@ package top.alexmmd.dog.service.impl;
 import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 import top.alexmmd.dog.dao.LoginAccountDao;
+import top.alexmmd.dog.domain.entity.LoginAccount;
 import top.alexmmd.dog.service.ILoginAccountService;
 
 /**
@@ -18,4 +19,8 @@ public class LoginAccountServiceImpl implements ILoginAccountService {
     private LoginAccountDao loginAccountDao;
 
 
+    @Override
+    public void createLoginAccount(LoginAccount loginAccount) {
+        loginAccountDao.insert(loginAccount);
+    }
 }

@@ -1,8 +1,11 @@
 package top.alexmmd.dog.domain.entity;
 
-import java.util.Date;
 import java.io.Serializable;
+import java.util.Date;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * (LoginAccount)实体类
@@ -11,12 +14,20 @@ import lombok.Data;
  * @since 2022-10-11 08:48:44
  */
 @Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class LoginAccount implements Serializable {
+
     private static final long serialVersionUID = 592421031463279303L;
     /**
      * 自增主键
      */
     private Integer id;
+    /**
+     * 用户id
+     */
+    private Long accountId;
     /**
      * 用户id
      */
@@ -41,13 +52,13 @@ public class LoginAccount implements Serializable {
      * 状态，1有效0无效
      */
     private Integer status;
-    
+
     private Date createTime;
-    
+
     private String createUser;
-    
+
     private Date updateTime;
-    
+
     private String updateUser;
 
 }
