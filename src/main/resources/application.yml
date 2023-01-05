@@ -2,7 +2,7 @@ spring:
   main:
     allow-circular-references: true
   application:
-    name: gk-app-auth
+    name: dog-hole
   profiles:
     active: ${APP_ENV:dev}
   jackson:
