@@ -1,5 +1,4 @@
 <?xml version = "1.0" encoding = "UTF-8"?>
-
 <configuration>
 	<!--配置当前log路径，这样写不好管理，每次都要修改xml，写在properties文件比较好-->
 	<property name="LOG_HOME" value="./logs" />
