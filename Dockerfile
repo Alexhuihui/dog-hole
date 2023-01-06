@@ -1,4 +1,4 @@
-FROM openjdk:11
+FROM openjdk:8
 ARG PROJECT_NAME=dog-hole
 WORKDIR /opt/deployments
 COPY ./target/$PROJECT_NAME.jar /opt/deployments/
