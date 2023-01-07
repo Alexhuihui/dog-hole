@@ -1,5 +1,6 @@
 package top.alexmmd.dog.controller;
 
+import java.util.List;
 import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -38,7 +39,7 @@ public class MorningController {
     }
 
     @GetMapping("/queryMorning")
-    public ObjectResponse<String> queryMorning() {
+    public ObjectResponse<List<String>> queryMorning() {
         return ObjectResponse.success(morningService.queryMorning());
     }
 }

@@ -3,8 +3,8 @@
 <mapper namespace="top.alexmmd.dog.dao.MorningDao">
 
 
-  <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-    insert into daily-morning(morning)
+  <insert id="insert">
+    insert into `daily-morning`(morning)
     values (#{morning})
   </insert>
   <select id="queryMorning" resultType="java.lang.String">
