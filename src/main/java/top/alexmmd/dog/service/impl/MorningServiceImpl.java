@@ -4,6 +4,7 @@ import cn.hutool.core.date.DateTime;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONObject;
+import java.util.Collections;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import top.alexmmd.dog.dao.MorningDao;
 import top.alexmmd.dog.service.IMorningService;
+import top.alexmmd.dog.starter.authorization.AuthContext;
 
 /**
  * @author wangyonghui
@@ -22,6 +24,7 @@ import top.alexmmd.dog.service.IMorningService;
 public class MorningServiceImpl implements IMorningService {
 
     public static final String FORMAT = "亲爱的虎仔，早安***";
+    public static final String NICK_NAME = "劳伦兹";
     @Resource
     private MorningDao morningDao;
 
@@ -35,6 +38,9 @@ public class MorningServiceImpl implements IMorningService {
 
     @Override
     public List<String> queryMorning() {
+        if (!StrUtil.containsAny(AuthContext.getName(), NICK_NAME)) {
+            return Collections.emptyList();
+        }
         String morning = morningDao.queryMorning();
         return StrUtil.split(morning, "***");
     }
