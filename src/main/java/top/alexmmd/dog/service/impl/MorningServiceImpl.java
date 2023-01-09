@@ -6,7 +6,6 @@ import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONObject;
 import java.util.Collections;
 import java.util.List;
-import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -83,8 +82,4 @@ public class MorningServiceImpl implements IMorningService {
         morning.append("距离我们订婚还有 " + betweenDay + " 天***");
     }
 
-    @PostConstruct
-    public void init() {
-        addMorning(generate());
-    }
 }
