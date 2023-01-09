@@ -39,7 +39,7 @@ public class MorningServiceImpl implements IMorningService {
     @Override
     public List<String> queryMorning() {
         if (!StrUtil.containsAny(AuthContext.getName(), NICK_NAME)) {
-            return Collections.emptyList();
+            return Collections.singletonList("您还没有和您的男/女朋友绑定，请先联系管理员进行绑定");
         }
         String morning = morningDao.queryMorning();
         return StrUtil.split(morning, "***");
