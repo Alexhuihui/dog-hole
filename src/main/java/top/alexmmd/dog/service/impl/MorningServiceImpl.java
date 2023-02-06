@@ -77,9 +77,9 @@ public class MorningServiceImpl implements IMorningService {
     }
 
     private void getEngaged(StringBuilder morning) {
-        long betweenDay = DateUtil.betweenDay(DateUtil.date(), DateUtil.parseDate("2023-02-01"),
+        long betweenDay = DateUtil.betweenDay(DateUtil.date(), DateUtil.parseDate("2023-08-05"),
                 true);
-        morning.append("距离我们订婚还有 " + betweenDay + " 天***");
+        morning.append("距离我们结婚还有 " + betweenDay + " 天***");
     }
 
 }
