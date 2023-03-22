@@ -6,8 +6,10 @@ import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONObject;
 import java.util.Collections;
 import java.util.List;
+import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import top.alexmmd.dog.dao.MorningDao;
@@ -29,6 +31,15 @@ public class MorningServiceImpl implements IMorningService {
 
     @Resource
     private RestTemplate restTemplate;
+
+    @Value("${gaode.key}")
+    private String key;
+
+    @PostConstruct
+    public void init() {
+        String morning = this.generate();
+        this.addMorning(morning);
+    }
 
     @Override
     public void addMorning(String morning) {
@@ -63,11 +74,12 @@ public class MorningServiceImpl implements IMorningService {
     }
 
     private void getWeather(StringBuilder morning) {
-        String url = "http://autodev.openspeech.cn/csp/api/v2.1/weather?openId=aiuicus&clientType=android&sign=android&city=深圳";
+        String url = "https://restapi.amap.com/v3/weather/weatherInfo?key={}&city=440300&extensions=base";
+        url = StrUtil.format(url, key);
         JSONObject result = restTemplate.getForObject(url, JSONObject.class);
-        JSONObject object = result.getJSONObject("data").getJSONArray("list").getJSONObject(0);
+        JSONObject object = result.getJSONArray("lives").getJSONObject(0);
         morning.append("今日天气: " + object.getStr("weather") + "***");
-        morning.append("当前温度: " + object.getDouble("temp").intValue() + "***");
+        morning.append("当前温度: " + object.getStr("temperature") + "***");
     }
 
     private void getCount(StringBuilder morning) {
