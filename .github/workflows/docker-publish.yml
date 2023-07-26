@@ -60,9 +60,6 @@ jobs:
           port: ${{ secrets.PORT }}
           envs: GAODE_KEY,EMAIL_PASSWORD
           script: |
-            if [ -f "/opt/module/dog-hole/env_file" ]; then
-              rm "/opt/module/dog-hole/env_file"
-            fi
-            echo "GAODE_KEY=$GAODE_KEY" > env_file
-            echo "EMAIL_PASSWORD=$EMAIL_PASSWORD" >> env_file
+            echo "GAODE_KEY=$GAODE_KEY"
+            echo "EMAIL_PASSWORD=$EMAIL_PASSWORD"
             sh /opt/module/dog-hole/dog.sh
