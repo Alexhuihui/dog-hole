@@ -1,0 +1,47 @@
+CREATE TABLE projects (
+  id INT NOT NULL,
+  ownerId INT,
+  name VARCHAR(255),
+  description TEXT,
+  cover VARCHAR(255),
+  price DECIMAL(10, 2),
+  status VARCHAR(50),
+  pubTime BIGINT,
+  duration INT,
+  applyCount INT,
+  createdAt BIGINT,
+  specificRole VARCHAR(128),
+  bargain TINYINT,
+  statusText VARCHAR(50),
+  typeText VARCHAR(50),
+  visitCount INT,
+  canRefresh TINYINT,
+  type VARCHAR(50),
+  developerType VARCHAR(50),
+  PRIMARY KEY (id)
+);
+CREATE TABLE project_roles (
+  id INT NOT NULL AUTO_INCREMENT,
+  projectId INT NOT NULL,
+  role VARCHAR(255),
+  PRIMARY KEY (id),
+  FOREIGN KEY (projectId) REFERENCES projects(id) ON DELETE CASCADE
+);
+CREATE TABLE project_types (
+  id INT NOT NULL AUTO_INCREMENT,
+  projectId INT NOT NULL,
+  type VARCHAR(255),
+  name VARCHAR(255),
+  PRIMARY KEY (id),
+  FOREIGN KEY (projectId) REFERENCES projects(id) ON DELETE CASCADE
+);
+CREATE TABLE project_labels (
+  id INT NOT NULL AUTO_INCREMENT,
+  projectId INT NOT NULL,
+  label VARCHAR(255),
+  color VARCHAR(50),
+  labelId INT,
+  description VARCHAR(255),
+  PRIMARY KEY (id),
+  FOREIGN KEY (projectId) REFERENCES projects(id) ON DELETE CASCADE
+);

@@ -20,4 +20,7 @@ mybatis:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
 gaode:
-  key: ${KEY:111}
+  key: ${GAODE_KEY:111}
+
+email:
+  password: ${EMAIL_PASSWORD:111}

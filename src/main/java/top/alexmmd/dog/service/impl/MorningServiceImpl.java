@@ -74,12 +74,16 @@ public class MorningServiceImpl implements IMorningService {
     }
 
     private void getWeather(StringBuilder morning) {
-        String url = "https://restapi.amap.com/v3/weather/weatherInfo?key={}&city=440300&extensions=base";
-        url = StrUtil.format(url, key);
-        JSONObject result = restTemplate.getForObject(url, JSONObject.class);
-        JSONObject object = result.getJSONArray("lives").getJSONObject(0);
-        morning.append("今日天气: " + object.getStr("weather") + "***");
-        morning.append("当前温度: " + object.getStr("temperature") + "***");
+        try {
+            String url = "https://restapi.amap.com/v3/weather/weatherInfo?key={}&city=440300&extensions=base";
+            url = StrUtil.format(url, key);
+            JSONObject result = restTemplate.getForObject(url, JSONObject.class);
+            JSONObject object = result.getJSONArray("lives").getJSONObject(0);
+            morning.append("今日天气: " + object.getStr("weather") + "***");
+            morning.append("当前温度: " + object.getStr("temperature") + "***");
+        } catch (Exception e) {
+            log.error("获取天气错误", e);
+        }
     }
 
     private void getCount(StringBuilder morning) {

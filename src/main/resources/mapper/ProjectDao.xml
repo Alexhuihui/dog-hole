@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.alexmmd.dog.dao.ProjectDao">
+
+  <insert id="insert">
+    INSERT INTO projects (id, ownerId, name, description, cover, price, status, pubTime, duration, applyCount,
+                          createdAt, specificRole, bargain, statusText, typeText, visitCount, canRefresh, type, developerType)
+    VALUES (#{id}, #{ownerId}, #{name}, #{description}, #{cover}, #{price}, #{status}, #{pubTime}, #{duration},
+            #{applyCount}, #{createdAt}, #{specificRole}, #{bargain}, #{statusText}, #{typeText}, #{visitCount},
+            #{canRefresh}, #{type}, #{developerType})
+  </insert>
+
+  <select id="queryProject" resultType="top.alexmmd.dog.domain.entity.Project">
+    SELECT * FROM projects WHERE ownerId = #{ownerId} AND name = #{name}
+  </select>
+
+</mapper>
+
