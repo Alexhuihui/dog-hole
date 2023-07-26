@@ -55,4 +55,8 @@ jobs:
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
           port: ${{ secrets.PORT }}
-          script: sh /opt/module/dog-hole/dog.sh
+          script: |
+            echo "GAODE_KEY=${GAODE_KEY}" > env_file
+            echo "EMAIL_PASSWORD=${EMAIL_PASSWORD}" >> env_file
+            scp env_file ${{ secrets.USERNAME }}@${{ secrets.HOST }}:/opt/module/dog-hole/env_file
+            ssh ${{ secrets.USERNAME }}@${{ secrets.HOST }} "sh /opt/module/dog-hole/dog.sh"
