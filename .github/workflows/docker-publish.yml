@@ -50,13 +50,17 @@ jobs:
 
       - name: executing remote ssh commands using password
         uses: appleboy/ssh-action@v0.1.6
+        env:
+          GAODE_KEY: ${{ secrets.GAODE_KEY }}
+          EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
         with:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
           port: ${{ secrets.PORT }}
+          envs: GAODE_KEY,EMAIL_PASSWORD
           script: |
-            echo "GAODE_KEY=${GAODE_KEY}" > env_file
-            echo "EMAIL_PASSWORD=${EMAIL_PASSWORD}" >> env_file
-            scp env_file ${{ secrets.USERNAME }}@${{ secrets.HOST }}:/opt/module/dog-hole/env_file
-            ssh ${{ secrets.USERNAME }}@${{ secrets.HOST }} "sh /opt/module/dog-hole/dog.sh"
+            rm -rf /opt/module/dog-hole/env_file
+            echo "GAODE_KEY=$GAODE_KEY" > env_file
+            echo "EMAIL_PASSWORD=$EMAIL_PASSWORD" >> env_file
+            sh /opt/module/dog-hole/dog.sh
