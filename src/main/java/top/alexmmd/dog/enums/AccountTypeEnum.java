@@ -15,6 +15,8 @@ public enum AccountTypeEnum {
      * 微信
      */
     WECHAT(10, "微信"),
+
+    EMAIL(20, "微信"),
     ;
 
     private final Integer value;

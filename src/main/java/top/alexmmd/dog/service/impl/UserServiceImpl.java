@@ -1,5 +1,6 @@
 package top.alexmmd.dog.service.impl;
 
+import static top.alexmmd.dog.enums.AccountTypeEnum.EMAIL;
 import static top.alexmmd.dog.enums.AccountTypeEnum.WECHAT;
 import static top.alexmmd.dog.enums.AppCodeEnum.DOG_HOLE;
 
@@ -93,6 +94,29 @@ public class UserServiceImpl implements IUserService {
                 .accountId(IdUtil.getSnowflakeNextId())
                 .account(wechatUserInfoDTO.getOpenId())
                 .accountType(WECHAT.getValue())
+                .appCode(DOG_HOLE.name())
+                .status(VALID)
+                .build());
+        userDao.insertRole(Role.builder()
+                .uid(uid)
+                .name(ROLE_USER)
+                .build());
+        return uid;
+    }
+
+    @Override
+    public Long emailRegister(String email) {
+        Long uid = IdUtil.getSnowflakeNextId();
+        this.createUser(User.builder()
+                .nickName(email)
+                .uid(uid)
+                .status(VALID)
+                .build());
+        loginAccountService.createLoginAccount(LoginAccount.builder()
+                .uid(uid)
+                .accountId(IdUtil.getSnowflakeNextId())
+                .account(email)
+                .accountType(EMAIL.getValue())
                 .appCode(DOG_HOLE.name())
                 .status(VALID)
                 .build());

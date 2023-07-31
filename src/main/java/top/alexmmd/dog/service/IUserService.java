@@ -34,4 +34,6 @@ public interface IUserService {
     User loadUserByUsername(String username);
 
     Long wechatRegister(WechatRegisterDTO wechatRegisterDTO);
+
+    Long emailRegister(String email);
 }

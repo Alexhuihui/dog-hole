@@ -7,6 +7,7 @@ import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import java.nio.charset.StandardCharsets;
 import javax.annotation.Resource;
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -17,6 +18,7 @@ import top.alexmmd.dog.service.IEmailService;
 import top.alexmmd.dog.service.IProjectService;
 
 @Component
+@Profile("prod")
 public class CodeMartTask {
 
     @Resource

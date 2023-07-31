@@ -20,6 +20,8 @@ public enum LoginTypeEnum {
     SMS(20, "手机号验证码登录"),
 
     WECHAT(30, "微信小程序登录"),
+
+    EMAIL(40, "邮箱登录"),
     ;
 
     private final Integer value;

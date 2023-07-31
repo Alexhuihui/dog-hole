@@ -7,6 +7,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import top.alexmmd.common.base.http.response.BaseResponse;
 import top.alexmmd.common.base.http.response.ObjectResponse;
@@ -25,6 +26,12 @@ public class LoginController {
 
     @Resource
     private IUserService userService;
+
+    @PostMapping("/emailRegister")
+    public ObjectResponse<Long> emailRegister(@RequestParam String email,
+            @RequestParam String code) {
+        return ObjectResponse.success(userService.emailRegister(email), "注册成功");
+    }
 
     @PostMapping("/wechatRegister")
     public ObjectResponse<Long> wechatRegister(@RequestBody WechatRegisterDTO wechatRegisterDTO) {

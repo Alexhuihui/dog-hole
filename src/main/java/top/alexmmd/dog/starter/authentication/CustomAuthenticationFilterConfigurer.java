@@ -30,6 +30,7 @@ import org.springframework.security.web.util.matcher.RequestHeaderRequestMatcher
 import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.web.accept.ContentNegotiationStrategy;
 import org.springframework.web.accept.HeaderContentNegotiationStrategy;
+import top.alexmmd.dog.starter.authentication.provider.EmailAuthenticationProvider;
 import top.alexmmd.dog.starter.authentication.provider.WechatAuthenticationProvider;
 
 /**
@@ -157,6 +158,9 @@ public class CustomAuthenticationFilterConfigurer<H extends HttpSecurityBuilder<
         // 初始化 Provider
         WechatAuthenticationProvider wechatAuthenticationProvider = new WechatAuthenticationProvider();
         http.authenticationProvider(wechatAuthenticationProvider);
+
+        EmailAuthenticationProvider emailAuthenticationProvider = new EmailAuthenticationProvider();
+        http.authenticationProvider(emailAuthenticationProvider);
     }
 
     @SuppressWarnings("unchecked")
