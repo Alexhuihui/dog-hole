@@ -27,8 +27,11 @@ public class EmailAuthenticationProvider implements AuthenticationProvider {
         String code = emailAuthenticationToken.getCode();
         String email = emailAuthenticationToken.getEmail();
         log.info("用户{}登录{}", email, code);
-        // 通过微信用户信息查询本系统的用户信息
+        // 查询本系统的用户信息
         IUserService userService = SpringUtil.getBean(IUserService.class);
+        if (!userService.verifyEmail(email, code)) {
+            throw new AuthenticationServiceException("邮箱校验失败");
+        }
         UserVO userVO = userService.queryUserByAccount(email);
         if (ObjectUtil.isNull(userVO)) {
             userService.emailRegister(email);

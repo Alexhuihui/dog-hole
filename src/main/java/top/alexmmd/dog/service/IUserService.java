@@ -1,7 +1,6 @@
 package top.alexmmd.dog.service;
 
 import top.alexmmd.dog.domain.dto.WechatRegisterDTO;
-import top.alexmmd.dog.domain.dto.WechatUserInfoDTO;
 import top.alexmmd.dog.domain.entity.User;
 import top.alexmmd.dog.domain.vo.UserVO;
 
@@ -36,4 +35,8 @@ public interface IUserService {
     Long wechatRegister(WechatRegisterDTO wechatRegisterDTO);
 
     Long emailRegister(String email);
+
+    void sendVerificationCode(String email);
+
+    boolean verifyEmail(String email, String code);
 }

@@ -4,6 +4,7 @@ import cn.hutool.json.JSONUtil;
 import javax.annotation.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,6 +27,12 @@ public class LoginController {
 
     @Resource
     private IUserService userService;
+
+    @GetMapping("/emailCode")
+    public ObjectResponse<String> emailCode(@RequestParam String email) {
+        userService.sendVerificationCode(email);
+        return ObjectResponse.success("验证码发送成功");
+    }
 
     @PostMapping("/emailRegister")
     public ObjectResponse<Long> emailRegister(@RequestParam String email,
