@@ -7,6 +7,7 @@ import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import java.nio.charset.StandardCharsets;
 import javax.annotation.Resource;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -19,6 +20,7 @@ import top.alexmmd.dog.service.IProjectService;
 
 @Component
 @Profile("prod")
+@Slf4j
 public class CodeMartTask {
 
     @Resource
@@ -69,6 +71,7 @@ public class CodeMartTask {
                 String subject = "New Project Notification";
 
                 emailService.sendEmail(toEmail, subject, body);
+                log.info("邮件已发送，{}", name);
             }
         });
     }
