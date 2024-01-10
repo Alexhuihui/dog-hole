@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.alexmmd.dog.dao.ReminderDao">
+
+
+  <resultMap id="BaseResultMap" type="top.alexmmd.dog.domain.entity.Reminder">
+    <id column="id" property="id" jdbcType="INTEGER"/>
+    <result column="userId" property="userId" jdbcType="INTEGER"/>
+    <result column="reminderTime" property="reminderTime" jdbcType="DATE"/>
+    <result column="content" property="content" jdbcType="VARCHAR"/>
+  </resultMap>
+
+  <select id="getRemindersWithin7Days" resultMap="BaseResultMap">
+    SELECT id, userId, reminderTime, content
+    FROM reminders
+    WHERE reminderTime BETWEEN #{startDate} AND #{endDate}
+  </select>
+
+</mapper>
+
