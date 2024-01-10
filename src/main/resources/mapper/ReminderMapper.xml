@@ -11,6 +11,11 @@
     <result column="content" property="content" jdbcType="VARCHAR"/>
   </resultMap>
 
+  <insert id="insertReminder" parameterType="top.alexmmd.dog.domain.entity.Reminder">
+    INSERT INTO reminders (userId, reminderTime, content)
+    VALUES (#{userId}, #{reminderTime}, #{content})
+  </insert>
+
   <select id="getRemindersWithin7Days" resultMap="BaseResultMap">
     SELECT id, userId, reminderTime, content
     FROM reminders

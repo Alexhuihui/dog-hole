@@ -2,6 +2,7 @@ package top.alexmmd.dog.service.impl;
 
 import static cn.hutool.core.date.DatePattern.NORM_DATETIME_PATTERN;
 
+import cn.hutool.core.date.DateField;
 import cn.hutool.core.date.DateUtil;
 import java.util.Date;
 import java.util.List;
@@ -43,8 +44,26 @@ public class ReminderServiceImpl implements IReminderService {
         for (Reminder reminder : remindersWithin7Days) {
             if (DateUtil.isIn(reminder.getReminderTime(), currentDate, endDate)) {
                 sendReminderEmail(reminder);
+                // 比较当前日期等于提醒日期时，新增一条数据，提醒日期增加一年
+                if (DateUtil.isSameDay(currentDate, reminder.getReminderTime())) {
+                    addReminderOneYearLater(reminder);
+                }
             }
         }
+    }
+
+    private void addReminderOneYearLater(Reminder reminder) {
+        // 提醒日期增加一年
+        Date newReminderDate = DateUtil.offset(reminder.getReminderTime(), DateField.YEAR, 1);
+
+        // 创建新的Reminder对象
+        Reminder newReminder = new Reminder();
+        newReminder.setUserId(reminder.getUserId());
+        newReminder.setReminderTime(newReminderDate);
+        newReminder.setContent(reminder.getContent());
+
+        // 插入新的提醒数据到数据库
+        reminderDao.insertReminder(newReminder);
     }
 
     private void sendReminderEmail(Reminder reminder) {

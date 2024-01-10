@@ -18,7 +18,7 @@ public class ReminderTask {
     @Resource
     private IReminderService reminderService;
 
-    @Scheduled(cron = "0 40 17 * * ?")
+    @Scheduled(cron = "0 0 7 * * ?")
     public void reminders() {
         reminderService.reminders();
     }

@@ -16,4 +16,6 @@ public interface ReminderDao {
     List<Reminder> getRemindersWithin7Days(@Param("startDate") Date startDate,
             @Param("endDate") Date endDate);
 
+    void insertReminder(Reminder newReminder);
+
 }
